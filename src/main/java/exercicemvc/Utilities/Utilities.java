@@ -7,20 +7,20 @@ public class Utilities {
     /**
      * Convertit une liste en ArrayList<String> si c'est bien une chaine de caractères
      *
-     * @param list la liste à convertir
+     * @param liste la liste à convertir
      * @return ArrayList<String> si la conversion est possible, sinon null
      */
-    public ArrayList<String> convertToStringList(ArrayList<?> list) {
+    public ArrayList<String> convertToStringList(ArrayList<?> liste) {
         try {
-            ArrayList<String> stringList = new ArrayList<>();
-            for (Object obj : list) {
+            ArrayList<String> listeString = new ArrayList<>();
+            for (Object obj : liste) {
                 if (obj instanceof String) {
-                    stringList.add((String) obj);
+                    listeString.add((String) obj);
                 } else {
                     return null;
                 }
             }
-            return stringList;
+            return listeString;
         } catch (ClassCastException e) {
             return null;
         }

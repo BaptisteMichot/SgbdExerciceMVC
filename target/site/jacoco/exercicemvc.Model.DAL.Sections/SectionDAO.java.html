@@ -23,11 +23,11 @@ public class SectionDAO implements ISectionDAO {
 <span class="fc" id="L23">            this.connexion = connexion;</span>
 <span class="fc" id="L24">            Statement statement = connexion.createStatement();</span>
             try {
-<span class="fc" id="L26">                statement.executeUpdate(&quot;CREATE TABLE IF NOT EXISTS Section (id SERIAL PRIMARY KEY, nom VARCHAR(30))&quot;);</span>
-<span class="nc" id="L27">            } catch (SQLException e) {</span>
+<span class="fc" id="L26">                statement.executeUpdate(&quot;CREATE TABLE IF NOT EXISTS section (id SERIAL PRIMARY KEY, nom VARCHAR(30))&quot;);</span>
+<span class="pc" id="L27">            } catch (SQLException e) {</span>
                 // La table existe déjà. Log pour le cas où.
-<span class="nc" id="L29">                System.out.println(e.getMessage());</span>
-<span class="fc" id="L30">            }</span>
+<span class="nc" id="L29">                e.printStackTrace();</span>
+            }
 <span class="fc" id="L31">            statement.close();</span>
 <span class="fc" id="L32">            this.insertSection = this.connexion.prepareStatement(&quot;INSERT into Section (nom) VALUES (?)&quot;);</span>
 <span class="fc" id="L33">            this.updateSection = this.connexion.prepareStatement(&quot;UPDATE Section SET nom=? WHERE id=?&quot;);</span>
@@ -36,9 +36,9 @@ public class SectionDAO implements ISectionDAO {
 <span class="fc" id="L36">            this.getSections = this.connexion.prepareStatement(&quot;SELECT id,nom FROM Section&quot;);</span>
 
             ;
-<span class="nc" id="L39">        } catch (SQLException e) {</span>
-<span class="nc" id="L40">            System.out.println(e.getMessage());</span>
-<span class="fc" id="L41">        }</span>
+<span class="pc" id="L39">        } catch (SQLException e) {</span>
+<span class="nc" id="L40">            e.printStackTrace();</span>
+        }
 <span class="fc" id="L42">    }</span>
 
     @Override
@@ -47,53 +47,53 @@ public class SectionDAO implements ISectionDAO {
 <span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (this.updateSection != null) {</span>
             try {
 <span class="fc" id="L49">                this.updateSection.close();</span>
-<span class="nc" id="L50">            } catch (SQLException e) {</span>
-<span class="nc" id="L51">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L50">            } catch (SQLException e) {</span>
+<span class="nc" id="L51">                e.printStackTrace();</span>
 <span class="nc" id="L52">                ret = false;</span>
-<span class="fc" id="L53">            }</span>
+            }
         }
 
 <span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (this.getIDSection != null) {</span>
             try {
 <span class="fc" id="L58">                this.getIDSection.close();</span>
-<span class="nc" id="L59">            } catch (SQLException e) {</span>
-<span class="nc" id="L60">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L59">            } catch (SQLException e) {</span>
+<span class="nc" id="L60">                e.printStackTrace();</span>
 <span class="nc" id="L61">                ret = false;</span>
-<span class="fc" id="L62">            }</span>
+            }
         }
 <span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (this.deleteSection != null) {</span>
             try {
 <span class="fc" id="L66">                this.deleteSection.close();</span>
-<span class="nc" id="L67">            } catch (SQLException e) {</span>
-<span class="nc" id="L68">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L67">            } catch (SQLException e) {</span>
+<span class="nc" id="L68">                e.printStackTrace();</span>
 <span class="nc" id="L69">                ret = false;</span>
-<span class="fc" id="L70">            }</span>
+            }
         }
         
 <span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (this.getSections != null) {</span>
             try {
 <span class="fc" id="L75">                this.getSections.close();</span>
-<span class="nc" id="L76">            } catch (SQLException e) {</span>
-<span class="nc" id="L77">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L76">            } catch (SQLException e) {</span>
+<span class="nc" id="L77">                e.printStackTrace();</span>
 <span class="nc" id="L78">                ret = false;</span>
-<span class="fc" id="L79">            }</span>
+            }
         }
         
 <span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (this.insertSection != null) {</span>
             try {
 <span class="fc" id="L84">                this.insertSection.close();</span>
-<span class="nc" id="L85">            } catch (SQLException e) {</span>
-<span class="nc" id="L86">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L85">            } catch (SQLException e) {</span>
+<span class="nc" id="L86">                e.printStackTrace();</span>
 <span class="nc" id="L87">                ret = false;</span>
-<span class="fc" id="L88">            }</span>
+            }
         }
 <span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (this.connexion != null) {</span>
             try {
 <span class="fc" id="L92">                this.connexion.close();</span>
-<span class="nc" id="L93">            } catch (SQLException e) {</span>
-<span class="nc" id="L94">                System.out.println(e.getMessage());</span>
+<span class="pc" id="L93">            } catch (SQLException e) {</span>
+<span class="nc" id="L94">                e.printStackTrace();</span>
 <span class="nc" id="L95">                ret = false;</span>
-<span class="fc" id="L96">            }</span>
+            }
         }
 
 <span class="fc" id="L99">        return ret;</span>
@@ -107,10 +107,10 @@ public class SectionDAO implements ISectionDAO {
 <span class="fc bfc" id="L107" title="All 2 branches covered.">            while (set.next()) {</span>
 <span class="fc" id="L108">                Section section = new Section(set.getInt(1), set.getString(2));</span>
 <span class="fc" id="L109">                listeSection.add(section);</span>
-<span class="fc" id="L110">            }</span>
-<span class="nc" id="L111">        } catch (SQLException e) {</span>
-<span class="nc" id="L112">            System.out.println(e.getMessage());</span>
-<span class="fc" id="L113">        }</span>
+            }
+<span class="pc" id="L111">        } catch (SQLException e) {</span>
+<span class="nc" id="L112">            e.printStackTrace();</span>
+        }
 <span class="fc" id="L114">        return listeSection;</span>
 
     }
@@ -124,9 +124,9 @@ public class SectionDAO implements ISectionDAO {
 <span class="fc bfc" id="L124" title="All 2 branches covered.">            while (set.next()) {</span>
 <span class="fc" id="L125">                id = set.getInt(1);</span>
             }
-<span class="nc" id="L127">        } catch (SQLException e) {</span>
-<span class="nc" id="L128">            System.out.println(e.getMessage());</span>
-<span class="fc" id="L129">        }</span>
+<span class="pc" id="L127">        } catch (SQLException e) {</span>
+<span class="nc" id="L128">            e.printStackTrace();</span>
+        }
 
 <span class="fc" id="L131">        return id;</span>
     }
@@ -137,10 +137,10 @@ public class SectionDAO implements ISectionDAO {
 <span class="fc" id="L137">            this.updateSection.setString(1, nom);</span>
 <span class="fc" id="L138">            this.updateSection.setInt(2, id);    </span>
 <span class="fc" id="L139">            this.updateSection.executeUpdate();</span>
-<span class="nc" id="L140">        } catch (SQLException e) {</span>
-<span class="nc" id="L141">            System.out.println(e.getMessage());</span>
+<span class="pc" id="L140">        } catch (SQLException e) {</span>
+<span class="nc" id="L141">            e.printStackTrace();</span>
 <span class="nc" id="L142">            return false;</span>
-<span class="fc" id="L143">        }</span>
+        }
 <span class="fc" id="L144">        return true;</span>
     }
 
@@ -149,10 +149,10 @@ public class SectionDAO implements ISectionDAO {
         try {
 <span class="fc" id="L150">            this.deleteSection.setInt(1, id);</span>
 <span class="fc" id="L151">            this.deleteSection.execute();</span>
-<span class="nc" id="L152">        } catch (SQLException e) {</span>
-<span class="nc" id="L153">            System.out.println(e.getMessage());</span>
+<span class="pc" id="L152">        } catch (SQLException e) {</span>
+<span class="nc" id="L153">            e.printStackTrace();</span>
 <span class="nc" id="L154">            return false;</span>
-<span class="fc" id="L155">        }</span>
+        }
 <span class="fc" id="L156">        return true;</span>
     }
 
@@ -161,10 +161,10 @@ public class SectionDAO implements ISectionDAO {
         try {
 <span class="fc" id="L162">            this.insertSection.setString(1, nom);</span>
 <span class="fc" id="L163">            this.insertSection.executeUpdate();</span>
-<span class="nc" id="L164">        } catch (SQLException e) {</span>
-<span class="nc" id="L165">            System.out.println(e.getMessage());</span>
+<span class="pc" id="L164">        } catch (SQLException e) {</span>
+<span class="nc" id="L165">            e.printStackTrace();</span>
 <span class="nc" id="L166">            return false;</span>
-<span class="fc" id="L167">        }</span>
+        }
 <span class="fc" id="L168">        return true;</span>
     }
 

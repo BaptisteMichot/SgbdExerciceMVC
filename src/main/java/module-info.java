@@ -1,4 +1,4 @@
-module be.iramps.ue1103.mvc {
+module exercicemvc {
     requires transitive java.desktop;
     requires transitive javafx.controls;
     requires javafx.fxml;

@@ -11,9 +11,19 @@ public class TestingView implements PropertyChangeListener, IView {
     Controller control;
     private Utilities utilities;
 
+
+    public TestingView(){
+        this.utilities = new Utilities();
+    }
+
     @Override
     public void setController(Controller control) {
         this.control = control;
+    }
+
+    @Override
+    public Controller getController() {
+        return this.control;
     }
 
     @Override
@@ -28,6 +38,38 @@ public class TestingView implements PropertyChangeListener, IView {
     public void showPrincipalWindow() {
     }
 
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+        ArrayList<?> nouvelleValeur = (ArrayList<?>) evt.getNewValue();
+        ArrayList<String> listeString = utilities.convertToStringList(nouvelleValeur);
+        if(listeString == null){
+            System.err.println("Erreur de type pour " + evt.getPropertyName());
+            return;
+        }
+
+        switch (evt.getPropertyName()) {
+            case "listeSection":
+                this.showAllSections(listeString);
+                break;
+            case "sectionSelected":
+                this.showSection(listeString);
+                break;
+            case "listeStatus":
+                this.showAllStatus(listeString);
+                break;
+            case "statusSelected":
+                this.showStatus(listeString);
+                break;
+            default:
+                System.err.println("Erreur : " + evt.getPropertyName() + " n'a pas été implémenté");
+                break;
+        }
+    }
+
+
+    //Sections
     @Override
     public void addNewSection() {
     }
@@ -44,59 +86,7 @@ public class TestingView implements PropertyChangeListener, IView {
         System.out.println(infoSection.get(0) + "-" +infoSection.get(1));
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        this.utilities = new Utilities();
-        switch (evt.getPropertyName()) {
-            case "listeSection":
-            if (evt.getNewValue() instanceof ArrayList<?>) {
-                ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                if (stringList != null) {
-                    this.showAllSections(stringList);
-                }else{
-                    System.err.println("Erreur: listeSection doit être de type ArrayList<String>.");
-                }
-            }
-            break;
-            case "sectionSelected":
-            if (evt.getNewValue() instanceof ArrayList<?>) {
-                ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                if (stringList != null) {
-                    this.showSection(stringList);
-                }else{
-                    System.err.println("Erreur: sectionSelected doit être de type ArrayList<String>.");
-                }
-            }
-            break;
-            case "listeStatus":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showAllStatus(stringList);
-                    }else{
-                        System.err.println("Erreur: listeStatus doit être de type ArrayList<String>.");
-                    }
-                }
-                break;
-            case "statusSelected":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showStatus(stringList);
-                    }else{
-                        System.err.println("Erreur: statusSelected doit être de type ArrayList<String>.");
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
+    //Status
     @Override
     public void addNewStatus() {
     }
@@ -111,11 +101,6 @@ public class TestingView implements PropertyChangeListener, IView {
     @Override
     public void showStatus(ArrayList<String> infoStatus) {
         System.out.println(infoStatus.get(0) + "-" +infoStatus.get(1));
-    }
-
-    @Override
-    public Controller getController() {
-        return this.control;
     }
     
 }

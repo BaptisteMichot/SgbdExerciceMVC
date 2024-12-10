@@ -7,20 +7,20 @@ import java.util.ArrayList;
     /**
      * Convertit une liste en ArrayList&lt;String&gt; si c'est bien une chaine de caractères
      *
-     * @param list la liste à convertir
+     * @param liste la liste à convertir
      * @return ArrayList&lt;String&gt; si la conversion est possible, sinon null
      */
-    public ArrayList&lt;String&gt; convertToStringList(ArrayList&lt;?&gt; list) {
+    public ArrayList&lt;String&gt; convertToStringList(ArrayList&lt;?&gt; liste) {
         try {
-<span class="fc" id="L15">            ArrayList&lt;String&gt; stringList = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L16" title="All 2 branches covered.">            for (Object obj : list) {</span>
+<span class="fc" id="L15">            ArrayList&lt;String&gt; listeString = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">            for (Object obj : liste) {</span>
 <span class="pc bpc" id="L17" title="1 of 2 branches missed.">                if (obj instanceof String) {</span>
-<span class="fc" id="L18">                    stringList.add((String) obj);</span>
-                } else {
+<span class="fc" id="L18">                    listeString.add((String) obj);</span>
+<span class="fc" id="L19">                } else {</span>
 <span class="nc" id="L20">                    return null;</span>
                 }
-<span class="fc" id="L22">            }</span>
-<span class="fc" id="L23">            return stringList;</span>
+            }
+<span class="fc" id="L23">            return listeString;</span>
 <span class="nc" id="L24">        } catch (ClassCastException e) {</span>
 <span class="nc" id="L25">            return null;</span>
         }

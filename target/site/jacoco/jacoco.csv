@@ -1,16 +1,16 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-mvc,exercicemvc.Model,PrimaryModel,5,208,0,4,2,53,1,15,1,13
-mvc,exercicemvc.Model.DAL.Sections,SectionDAO,83,185,6,10,35,61,6,9,0,7
-mvc,exercicemvc.View,Section,344,0,0,0,50,0,10,0,10,0
-mvc,exercicemvc.View,Main,332,0,21,0,90,0,28,0,16,0
-mvc,exercicemvc.View,Status,344,0,0,0,50,0,10,0,10,0
+mvc,exercicemvc.Model,PrimaryModel,0,213,0,4,0,55,0,16,0,14
+mvc,exercicemvc.Model.DAL.Sections,SectionDAO,57,185,6,10,22,60,6,9,0,7
+mvc,exercicemvc.View,Section,344,0,0,0,51,0,10,0,10,0
+mvc,exercicemvc.View,Main,278,0,7,0,72,0,21,0,16,0
+mvc,exercicemvc.View,Status,344,0,0,0,51,0,10,0,10,0
 mvc,exercicemvc,App,12,0,0,0,5,0,2,0,2,0
 mvc,exercicemvc.Utilities,Utilities,5,28,1,3,3,7,1,3,0,2
 mvc,exercicemvc.Model.DAL,DAOFactory,17,31,2,0,7,9,2,3,1,3
 mvc,exercicemvc.Controller,Controller.new EventHandler() {...},20,0,0,0,3,0,2,0,2,0
-mvc,exercicemvc.Controller,Controller,199,61,15,0,44,25,32,13,19,13
+mvc,exercicemvc.Controller,Controller,196,61,15,0,44,25,32,13,19,13
 mvc,exercicemvc.Controller,Controller.new EventHandler() {...},12,0,0,0,4,0,2,0,2,0
 mvc,exercicemvc.Controller,Controller.new EventHandler() {...},24,0,2,0,4,0,3,0,2,0
-mvc,exercicemvc.Model.DAL.Status,StatusDAO,83,185,6,10,22,60,6,9,0,7
+mvc,exercicemvc.Model.DAL.Status,StatusDAO,57,185,6,10,22,60,6,9,0,7
 mvc,exercicemvc.Model.BL,Section,7,12,0,0,3,5,2,2,2,2
 mvc,exercicemvc.Model.BL,Status,7,12,0,0,3,5,2,2,2,2

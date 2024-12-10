@@ -23,21 +23,21 @@ public class StatusDAO implements IStatusDAO {
             this.connexion = connexion;
             Statement statement = connexion.createStatement();
             try {
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS Status (id SERIAL PRIMARY KEY, nom VARCHAR(30))");
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS status (id SERIAL PRIMARY KEY, nom VARCHAR(30))");
             } catch (SQLException e) {
                 // La table existe déjà. Log pour le cas où.
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
             statement.close();
             this.insertStatus = this.connexion.prepareStatement("INSERT into Status (nom) VALUES (?)");
             this.updateStatus = this.connexion.prepareStatement("UPDATE Status SET nom=? WHERE id=?");
             this.deleteStatus = this.connexion.prepareStatement("DELETE FROM Status WHERE id=?");
             this.getIDStatus = this.connexion.prepareStatement("SELECT id FROM Status WHERE nom=?");
-            this.getStatus = this.connexion.prepareStatement("SELECT id,nom FROM Status");
+            this.getStatus = this.connexion.prepareStatement("SELECT id, nom FROM Status ORDER BY id ASC");
 
             ;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -48,7 +48,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.updateStatus.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -57,7 +57,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.getIDStatus.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -65,7 +65,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.deleteStatus.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -74,7 +74,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.getStatus.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -83,7 +83,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.insertStatus.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -91,7 +91,7 @@ public class StatusDAO implements IStatusDAO {
             try {
                 this.connexion.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -109,7 +109,7 @@ public class StatusDAO implements IStatusDAO {
                 listeStatus.add(status);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return listeStatus;
 
@@ -125,7 +125,7 @@ public class StatusDAO implements IStatusDAO {
                 id = set.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return id;
@@ -138,7 +138,7 @@ public class StatusDAO implements IStatusDAO {
             this.updateStatus.setInt(2, id);    
             this.updateStatus.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -150,7 +150,7 @@ public class StatusDAO implements IStatusDAO {
             this.deleteStatus.setInt(1, id);
             this.deleteStatus.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -162,7 +162,7 @@ public class StatusDAO implements IStatusDAO {
             this.insertStatus.setString(1, nom);
             this.insertStatus.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;

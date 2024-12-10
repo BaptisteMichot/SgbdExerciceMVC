@@ -19,6 +19,7 @@ import exercicemvc.View.TestingView;
 
 @DisplayName("Tests d'intégration: ensemble des composants")
 public class ITApp {
+    private TestingView testingView;
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private static IModel model = new PrimaryModel();
@@ -31,11 +32,14 @@ public class ITApp {
     @BeforeEach
     public void setUp() {
         System.setOut(new PrintStream(outputStreamCaptor));
+        testingView = new TestingView();
+        model.addPropertyChangeListener((PropertyChangeListener) testingView);
     }
 
     @AfterEach
     public void tearDown() {
         System.setOut(standardOut);
+        model.removePropertyChangeListener((PropertyChangeListener) testingView);
     }
 
     @Test
@@ -45,7 +49,6 @@ public class ITApp {
         IView testingView = new TestingView();
         controller.setView(testingView);
         controller.setModel(model);
-        model.addPropertyChangeListener((PropertyChangeListener)testingView);
         testingView.setController(controller);
         
         Assertions.assertAll(
@@ -96,18 +99,17 @@ public class ITApp {
         IView testingView = new TestingView();
         controller.setView(testingView);
         controller.setModel(model);
-        model.addPropertyChangeListener((PropertyChangeListener)testingView);
         testingView.setController(controller);
         
         Assertions.assertAll(
             () -> {
                 controller.showAllStatus();
-                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif-", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();
                 controller.showAllStatus();
-                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif-", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();

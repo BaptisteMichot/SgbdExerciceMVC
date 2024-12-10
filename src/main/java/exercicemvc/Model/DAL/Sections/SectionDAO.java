@@ -23,10 +23,10 @@ public class SectionDAO implements ISectionDAO {
             this.connexion = connexion;
             Statement statement = connexion.createStatement();
             try {
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS Section (id SERIAL PRIMARY KEY, nom VARCHAR(30))");
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS section (id SERIAL PRIMARY KEY, nom VARCHAR(30))");
             } catch (SQLException e) {
                 // La table existe déjà. Log pour le cas où.
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
             statement.close();
             this.insertSection = this.connexion.prepareStatement("INSERT into Section (nom) VALUES (?)");
@@ -37,7 +37,7 @@ public class SectionDAO implements ISectionDAO {
 
             ;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -48,7 +48,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.updateSection.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -57,7 +57,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.getIDSection.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -65,7 +65,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.deleteSection.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -74,7 +74,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.getSections.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -83,7 +83,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.insertSection.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -91,7 +91,7 @@ public class SectionDAO implements ISectionDAO {
             try {
                 this.connexion.close();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 ret = false;
             }
         }
@@ -109,7 +109,7 @@ public class SectionDAO implements ISectionDAO {
                 listeSection.add(section);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return listeSection;
 
@@ -125,7 +125,7 @@ public class SectionDAO implements ISectionDAO {
                 id = set.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return id;
@@ -138,7 +138,7 @@ public class SectionDAO implements ISectionDAO {
             this.updateSection.setInt(2, id);    
             this.updateSection.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -150,7 +150,7 @@ public class SectionDAO implements ISectionDAO {
             this.deleteSection.setInt(1, id);
             this.deleteSection.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -162,7 +162,7 @@ public class SectionDAO implements ISectionDAO {
             this.insertSection.setString(1, nom);
             this.insertSection.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;

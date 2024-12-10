@@ -29,6 +29,7 @@ public class Main extends Application implements PropertyChangeListener, IView {
 
     public void setController(Controller control) {
         this.control = control;
+        this.utilities = new Utilities();
         this.sectionWindow = new Section(this);
         this.statusWindows = new Status(this);
     }
@@ -37,55 +38,33 @@ public class Main extends Application implements PropertyChangeListener, IView {
         return this.control;
     }
 
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.utilities = new Utilities();
+
+        ArrayList<?> nouvelleValeur = (ArrayList<?>) evt.getNewValue();
+        ArrayList<String> listeString = utilities.convertToStringList(nouvelleValeur);
+
+        if(listeString == null){
+            System.err.println("Erreur de type pour " + evt.getPropertyName());
+            return;
+        }
+
         switch (evt.getPropertyName()) {
             case "listeSection":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showAllSections(stringList);
-                    }else{
-                        System.err.println("Erreur: listeSection doit être de type ArrayList<String>.");
-                    }
-                }
+                this.showAllSections(listeString);
                 break;
             case "sectionSelected":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showSection(stringList);
-                    }else{
-                        System.err.println("Erreur: sectionSelected doit être de type ArrayList<String>.");
-                    }
-                }
+                this.showSection(listeString);
                 break;
             case "listeStatus":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showAllStatus(stringList);
-                    }else{
-                        System.err.println("Erreur: listeStatus doit être de type ArrayList<String>.");
-                    }
-                }
+                this.showAllStatus(listeString);
                 break;
             case "statusSelected":
-                if (evt.getNewValue() instanceof ArrayList<?>) {
-                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
-                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
-                    if (stringList != null) {
-                        this.showStatus(stringList);
-                    }else{
-                        System.err.println("Erreur: statusSelected doit être de type ArrayList<String>.");
-                    }
-                }
+                this.showStatus(listeString);
                 break;
             default:
+                System.err.println("Erreur : " + evt.getPropertyName() + " n'a pas été implémenté");
                 break;
         }
     }
@@ -162,20 +141,17 @@ public class Main extends Application implements PropertyChangeListener, IView {
     }
 
     //Status
-    @Override
-    public void addNewStatus() {
-        scene.setRoot(this.statusWindows.addNewStatus());
-    }
-
-    @Override
     public void showAllStatus(ArrayList<String> listeStatus) {
         ListView<String> listView = this.statusWindows.showAllStatus(listeStatus);
         showPrincipalWindow();
         actualParent.getChildren().add(listView);
     }
 
-    @Override
     public void showStatus(ArrayList<String> infoStatus) {
         scene.setRoot(this.statusWindows.showStatus(infoStatus));
+    }
+
+    public void addNewStatus() {
+        scene.setRoot(this.statusWindows.addNewStatus());
     }
 }
