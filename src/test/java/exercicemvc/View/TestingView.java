@@ -5,9 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import exercicemvc.Controller.Controller;
+import exercicemvc.Utilities.Utilities;
 
 public class TestingView implements PropertyChangeListener, IView {
     Controller control;
+    private Utilities utilities;
 
     @Override
     public void setController(Controller control) {
@@ -44,19 +46,55 @@ public class TestingView implements PropertyChangeListener, IView {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        this.utilities = new Utilities();
         switch (evt.getPropertyName()) {
             case "listeSection":
-                if (evt.getNewValue().getClass().isAssignableFrom(ArrayList.class))
-                    this.showAllSections((ArrayList<String>) evt.getNewValue());
-                break;
-
+            if (evt.getNewValue() instanceof ArrayList<?>) {
+                ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                if (stringList != null) {
+                    this.showAllSections(stringList);
+                }else{
+                    System.err.println("Erreur: listeSection doit être de type ArrayList<String>.");
+                }
+            }
+            break;
             case "sectionSelected":
-                if (evt.getNewValue().getClass().isAssignableFrom(ArrayList.class))
-                    this.showSection((ArrayList<String>) evt.getNewValue());
+            if (evt.getNewValue() instanceof ArrayList<?>) {
+                ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                if (stringList != null) {
+                    this.showSection(stringList);
+                }else{
+                    System.err.println("Erreur: sectionSelected doit être de type ArrayList<String>.");
+                }
+            }
+            break;
+            case "listeStatus":
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showAllStatus(stringList);
+                    }else{
+                        System.err.println("Erreur: listeStatus doit être de type ArrayList<String>.");
+                    }
+                }
+                break;
+            case "statusSelected":
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showStatus(stringList);
+                    }else{
+                        System.err.println("Erreur: statusSelected doit être de type ArrayList<String>.");
+                    }
+                }
+                break;
             default:
                 break;
         }
-    
     }
 
     @Override

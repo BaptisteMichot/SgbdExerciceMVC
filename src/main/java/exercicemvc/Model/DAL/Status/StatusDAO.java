@@ -15,7 +15,7 @@ public class StatusDAO implements IStatusDAO {
     PreparedStatement updateStatus;
     PreparedStatement deleteStatus;
     PreparedStatement getIDStatus;
-    PreparedStatement getStatuss;
+    PreparedStatement getStatus;
 
 
     public StatusDAO(Connection connexion) {
@@ -33,7 +33,7 @@ public class StatusDAO implements IStatusDAO {
             this.updateStatus = this.connexion.prepareStatement("UPDATE Status SET nom=? WHERE id=?");
             this.deleteStatus = this.connexion.prepareStatement("DELETE FROM Status WHERE id=?");
             this.getIDStatus = this.connexion.prepareStatement("SELECT id FROM Status WHERE nom=?");
-            this.getStatuss = this.connexion.prepareStatement("SELECT id,nom FROM Status");
+            this.getStatus = this.connexion.prepareStatement("SELECT id,nom FROM Status");
 
             ;
         } catch (SQLException e) {
@@ -42,13 +42,71 @@ public class StatusDAO implements IStatusDAO {
     }
 
     @Override
+    public boolean close() {
+        boolean ret = true;
+       if (this.updateStatus != null) {
+            try {
+                this.updateStatus.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+
+        if (this.getIDStatus != null) {
+            try {
+                this.getIDStatus.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+        if (this.deleteStatus != null) {
+            try {
+                this.deleteStatus.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+        
+        if (this.getStatus != null) {
+            try {
+                this.getStatus.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+        
+        if (this.insertStatus != null) {
+            try {
+                this.insertStatus.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+        if (this.connexion != null) {
+            try {
+                this.connexion.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ret = false;
+            }
+        }
+
+        return ret;
+    }
+
+    @Override
     public ArrayList<Status> getStatus() {
         ArrayList<Status> listeStatus = new ArrayList<Status>();
         try {
-            ResultSet set = this.getStatuss.executeQuery();
+            ResultSet set = this.getStatus.executeQuery();
             while (set.next()) {
-                Status Status = new Status(set.getInt(1), set.getString(2));
-                listeStatus.add(Status);
+                Status status = new Status(set.getInt(1), set.getString(2));
+                listeStatus.add(status);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -108,47 +166,5 @@ public class StatusDAO implements IStatusDAO {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void close() {
-       if (this.updateStatus != null) {
-            try {
-                this.updateStatus.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        if (this.getIDStatus != null) {
-            try {
-                this.getIDStatus.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        if (this.deleteStatus != null) {
-            try {
-                this.deleteStatus.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        
-        if (this.getStatuss != null) {
-            try {
-                this.getStatuss.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        
-        if (this.insertStatus != null) {
-            try {
-                this.insertStatus.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 }

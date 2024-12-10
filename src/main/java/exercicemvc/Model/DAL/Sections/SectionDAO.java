@@ -1,7 +1,6 @@
 package exercicemvc.Model.DAL.Sections;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,9 +18,9 @@ public class SectionDAO implements ISectionDAO {
     PreparedStatement getSections;
 
 
-    public SectionDAO(String url, String user, String password) {
+    public SectionDAO(Connection connexion) {
         try {
-            this.connexion = DriverManager.getConnection(url, user, password);
+            this.connexion = connexion;
             Statement statement = connexion.createStatement();
             try {
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS Section (id SERIAL PRIMARY KEY, nom VARCHAR(30))");

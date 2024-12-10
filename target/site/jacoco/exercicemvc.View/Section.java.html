@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Section.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mvc</a> &gt; <a href="index.source.html" class="el_package">exercicemvc.View</a> &gt; <span class="el_source">Section.java</span></div><h1>Section.java</h1><pre class="source lang-java linenums">package exercicemvc.View;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+
+public class Section {
+    private Pane actualParent; 
+    private IView app;
+
+<span class="nc" id="L19">    public Section(IView app){</span>
+<span class="nc" id="L20">        this.app = app;</span>
+<span class="nc" id="L21">    }</span>
+
+    public ListView&lt;String&gt; showAllSections(ArrayList&lt;String&gt; listeSection){
+<span class="nc" id="L24">         ObservableList&lt;String&gt; sections = FXCollections.observableArrayList(listeSection);</span>
+<span class="nc" id="L25">         ListView&lt;String&gt; listView = new ListView&lt;String&gt;(sections);</span>
+<span class="nc" id="L26">         Supplier&lt;String[]&gt; supplier = () -&gt; new String[] {listView.getSelectionModel().getSelectedItem()};</span>
+<span class="nc" id="L27">         listView.setOnMouseClicked(app.getController().generateEventHandlerMouse(&quot;show-section&quot;, supplier));</span>
+<span class="nc" id="L28">         return listView;</span>
+    }
+
+    public Pane showSection(ArrayList&lt;String&gt; infoSection){
+<span class="nc" id="L32">        String id = infoSection.get(0);</span>
+<span class="nc" id="L33">        String nom = infoSection.get(1);</span>
+<span class="nc" id="L34">        actualParent = new VBox(10);</span>
+
+        // 1ère ligne
+<span class="nc" id="L37">        HBox buttonParent = new HBox(5);</span>
+<span class="nc" id="L38">        Button afficher = new Button(&quot;Afficher les sections&quot;);</span>
+<span class="nc" id="L39">        Button sauver = new Button(&quot;Sauver les changements&quot;);</span>
+<span class="nc" id="L40">        Button supprimer = new Button(&quot;Supprimer la section&quot;);</span>
+
+        // 2ème ligne
+<span class="nc" id="L43">        HBox infoParent = new HBox(10);</span>
+<span class="nc" id="L44">        Label idTexte = new Label(&quot;ID:&quot;);</span>
+<span class="nc" id="L45">        Label nomTexte = new Label(&quot;Nom: &quot;);</span>
+<span class="nc" id="L46">        Label idL = new Label(id);</span>
+<span class="nc" id="L47">        TextField nomT = new TextField(nom);</span>
+        
+<span class="nc" id="L49">        Supplier&lt;String[]&gt; supplier = () -&gt; new String[] {id, nomT.getText()};</span>
+<span class="nc" id="L50">        sauver.setOnAction(app.getController().generateEventHandlerAction(</span>
+                &quot;update-section&quot;,supplier
+                ));
+
+<span class="nc" id="L54">        supplier = () -&gt; new String[] {&quot;&quot;};</span>
+<span class="nc" id="L55">        afficher.setOnAction(app.getController().generateEventHandlerAction(&quot;show-sections&quot;, supplier ));      </span>
+        
+<span class="nc" id="L57">        supplier = () -&gt; new String[] {id};</span>
+<span class="nc" id="L58">        supprimer.setOnAction(app.getController().generateEventHandlerAction(&quot;delete-section&quot;, supplier));</span>
+<span class="nc" id="L59">        buttonParent.getChildren().add(afficher); </span>
+<span class="nc" id="L60">        buttonParent.getChildren().add(sauver);</span>
+<span class="nc" id="L61">        buttonParent.getChildren().add(supprimer);</span>
+       
+<span class="nc" id="L63">        infoParent.getChildren().addAll(idTexte,idL,nomTexte,nomT);</span>
+
+<span class="nc" id="L65">        actualParent.getChildren().addAll(buttonParent, infoParent);</span>
+<span class="nc" id="L66">        return actualParent;</span>
+
+    }
+
+    public Pane addNewSection(){
+<span class="nc" id="L71">        actualParent = new VBox(10);</span>
+
+        // 1ère ligne
+<span class="nc" id="L74">        HBox buttonParent = new HBox(5);</span>
+<span class="nc" id="L75">        Button afficher = new Button(&quot;Afficher les sections&quot;);</span>
+<span class="nc" id="L76">        Button sauver = new Button(&quot;Sauver les changements&quot;);</span>
+
+        // 2ème ligne
+<span class="nc" id="L79">        HBox infoParent = new HBox(10);</span>
+<span class="nc" id="L80">        Label idTexte = new Label(&quot;ID:&quot;);</span>
+<span class="nc" id="L81">        Label nomTexte = new Label(&quot;Nom: &quot;);</span>
+<span class="nc" id="L82">        Label idL = new Label(&quot;N/A&quot;);</span>
+<span class="nc" id="L83">        TextField nomT = new TextField(&quot;&quot;);</span>
+
+        
+<span class="nc" id="L86">        Supplier&lt;String[]&gt; supplier = () -&gt; new String[] {&quot;&quot;};</span>
+<span class="nc" id="L87">        afficher.setOnAction(app.getController().generateEventHandlerAction(&quot;show-sections&quot;, supplier ));</span>
+<span class="nc" id="L88">        supplier = () -&gt; new String[] {nomT.getText()};</span>
+<span class="nc" id="L89">        sauver.setOnAction(app.getController().generateEventHandlerAction(&quot;insert-section&quot;,supplier));</span>
+
+<span class="nc" id="L91">        buttonParent.getChildren().add(afficher); </span>
+<span class="nc" id="L92">        buttonParent.getChildren().add(sauver);</span>
+       
+<span class="nc" id="L94">        infoParent.getChildren().addAll(idTexte,idL,nomTexte,nomT);</span>
+
+<span class="nc" id="L96">        actualParent.getChildren().addAll(buttonParent, infoParent);</span>
+<span class="nc" id="L97">        return actualParent;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

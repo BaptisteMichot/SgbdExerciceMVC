@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mvc</a> &gt; <a href="index.source.html" class="el_package">exercicemvc.Model.DAL</a> &gt; <span class="el_source">DAOFactory.java</span></div><h1>DAOFactory.java</h1><pre class="source lang-java linenums">package exercicemvc.Model.DAL;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import exercicemvc.Model.DAL.Sections.ISectionDAO;
+import exercicemvc.Model.DAL.Sections.SectionDAO;
+import exercicemvc.Model.DAL.Status.IStatusDAO;
+import exercicemvc.Model.DAL.Status.StatusDAO;
+
+
+public class DAOFactory implements IDAOFactory {
+
+    private Connection connexion;
+
+<span class="fc" id="L16">    final String url = &quot;jdbc:postgresql://127.0.0.1/exercicemvc&quot;;</span>
+<span class="fc" id="L17">    final String user = &quot;postgres&quot;;</span>
+<span class="fc" id="L18">    final String password = &quot;Baptiste0307&quot;;</span>
+
+<span class="fc" id="L20">    public DAOFactory(){</span>
+
+        try{
+<span class="fc" id="L23">            this.connexion = DriverManager.getConnection(url, user, password);</span>
+
+<span class="pc" id="L25">        } catch (SQLException e){</span>
+<span class="nc" id="L26">            e.printStackTrace();</span>
+        }
+<span class="fc" id="L28">    }</span>
+
+
+    public boolean close() {
+
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (this.connexion != null) {</span>
+            try {
+<span class="nc" id="L35">                this.connexion.close();</span>
+<span class="nc" id="L36">            } catch (SQLException e) {</span>
+<span class="nc" id="L37">                e.printStackTrace();</span>
+<span class="nc" id="L38">                return false;</span>
+            }
+        }
+
+<span class="nc" id="L42">        return true;</span>
+    }
+
+
+    public ISectionDAO createSectionDAO() {
+
+<span class="fc" id="L48">        return new SectionDAO(this.connexion);</span>
+    }
+    
+    public IStatusDAO createStatusDAO() {
+
+<span class="fc" id="L53">        return new StatusDAO(this.connexion);</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import exercicemvc.Controller.Controller;
+import exercicemvc.Utilities.Utilities;
 
 public class Main extends Application implements PropertyChangeListener, IView {
     private static Scene scene;
@@ -24,6 +25,7 @@ public class Main extends Application implements PropertyChangeListener, IView {
     private Controller control;
     private Section sectionWindow;
     private Status statusWindows;
+    private Utilities utilities;
 
     public void setController(Controller control) {
         this.control = control;
@@ -37,19 +39,57 @@ public class Main extends Application implements PropertyChangeListener, IView {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        this.utilities = new Utilities();
         switch (evt.getPropertyName()) {
             case "listeSection":
-                if (evt.getNewValue().getClass().isAssignableFrom(ArrayList.class))
-                    this.showAllSections((ArrayList<String>) evt.getNewValue());
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showAllSections(stringList);
+                    }else{
+                        System.err.println("Erreur: listeSection doit être de type ArrayList<String>.");
+                    }
+                }
                 break;
-
             case "sectionSelected":
-                if (evt.getNewValue().getClass().isAssignableFrom(ArrayList.class))
-                    this.showSection((ArrayList<String>) evt.getNewValue());
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showSection(stringList);
+                    }else{
+                        System.err.println("Erreur: sectionSelected doit être de type ArrayList<String>.");
+                    }
+                }
+                break;
+            case "listeStatus":
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showAllStatus(stringList);
+                    }else{
+                        System.err.println("Erreur: listeStatus doit être de type ArrayList<String>.");
+                    }
+                }
+                break;
+            case "statusSelected":
+                if (evt.getNewValue() instanceof ArrayList<?>) {
+                    ArrayList<?> newValue = (ArrayList<?>) evt.getNewValue();
+                    ArrayList<String> stringList = utilities.convertToStringList(newValue);
+                    if (stringList != null) {
+                        this.showStatus(stringList);
+                    }else{
+                        System.err.println("Erreur: statusSelected doit être de type ArrayList<String>.");
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -79,8 +119,8 @@ public class Main extends Application implements PropertyChangeListener, IView {
         HBox boutonStatus = new HBox();
         Button afficherStatus = new Button("Afficher les status");
         Button ajouterStatus = new Button("Ajouter" );
-        // afficherStatus.setOnAction(control.generateEventHandlerAction("show-status", supplier ));
-        // ajouterStatus.setOnAction(control.generateEventHandlerAction("add-status", supplier ));
+        afficherStatus.setOnAction(control.generateEventHandlerAction("show-status", supplier ));
+        ajouterStatus.setOnAction(control.generateEventHandlerAction("add-status", supplier ));
         boutonStatus.getChildren().addAll(afficherStatus, ajouterStatus);
         actualParent.getChildren().add(boutonStatus);
 
@@ -106,6 +146,7 @@ public class Main extends Application implements PropertyChangeListener, IView {
         Platform.exit();
     }
 
+    //Sections
     public void showAllSections(ArrayList<String> listeSection){
          ListView<String> listView = this.sectionWindow.showAllSections(listeSection);
          showPrincipalWindow();
@@ -120,18 +161,21 @@ public class Main extends Application implements PropertyChangeListener, IView {
         scene.setRoot(this.sectionWindow.addNewSection());
     }
 
+    //Status
     @Override
     public void addNewStatus() {
-        throw new UnsupportedOperationException("Fonction non implémentée 'addNewStatus'");
+        scene.setRoot(this.statusWindows.addNewStatus());
     }
 
     @Override
     public void showAllStatus(ArrayList<String> listeStatus) {
-        throw new UnsupportedOperationException("Fonction non implémentée 'addNewStatus'");
+        ListView<String> listView = this.statusWindows.showAllStatus(listeStatus);
+        showPrincipalWindow();
+        actualParent.getChildren().add(listView);
     }
 
     @Override
     public void showStatus(ArrayList<String> infoStatus) {
-        throw new UnsupportedOperationException("Fonction non implémentée 'addNewStatus'");
+        scene.setRoot(this.statusWindows.showStatus(infoStatus));
     }
 }

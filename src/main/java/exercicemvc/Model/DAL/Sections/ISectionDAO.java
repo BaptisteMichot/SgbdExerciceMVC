@@ -1,7 +1,6 @@
 package exercicemvc.Model.DAL.Sections;
 
 import java.util.ArrayList;
-
 import exercicemvc.Model.BL.Section;
 
 public interface ISectionDAO {

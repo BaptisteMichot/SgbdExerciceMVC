@@ -20,11 +20,11 @@ public class Status {
         this.app = app;
     }
 
-    public ListView<String> showAllstatus(ArrayList<String> listeStatus){
+    public ListView<String> showAllStatus(ArrayList<String> listeStatus){
          ObservableList<String> status = FXCollections.observableArrayList(listeStatus);
          ListView<String> listView = new ListView<String>(status);
          Supplier<String[]> supplier = () -> new String[] {listView.getSelectionModel().getSelectedItem()};
-         listView.setOnMouseClicked(app.getController().generateEventHandlerMouse("show-status", supplier));
+         listView.setOnMouseClicked(app.getController().generateEventHandlerMouse("show-single-status", supplier));
          return listView;
     }
 
@@ -48,7 +48,7 @@ public class Status {
         
         Supplier<String[]> supplier = () -> new String[] {id, nomT.getText()};
         sauver.setOnAction(app.getController().generateEventHandlerAction(
-                "update-Status",supplier
+                "update-status",supplier
                 ));
 
         supplier = () -> new String[] {""};
@@ -85,6 +85,7 @@ public class Status {
         
         Supplier<String[]> supplier = () -> new String[] {""};
         afficher.setOnAction(app.getController().generateEventHandlerAction("show-status", supplier ));
+
         supplier = () -> new String[] {nomT.getText()};
         sauver.setOnAction(app.getController().generateEventHandlerAction("insert-status",supplier));
 

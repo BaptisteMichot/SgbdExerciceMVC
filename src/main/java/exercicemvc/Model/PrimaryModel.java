@@ -5,16 +5,23 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import exercicemvc.Model.BL.Section;
+import exercicemvc.Model.DAL.DAOFactory;
 import exercicemvc.Model.DAL.Sections.ISectionDAO;
-import exercicemvc.Model.DAL.Sections.SectionDAO;
+import exercicemvc.Model.BL.Status;
+import exercicemvc.Model.DAL.Status.IStatusDAO;
 
 public class PrimaryModel implements IModel{
+
+    DAOFactory factory = new DAOFactory();
+
     private PropertyChangeSupport support;
     private ISectionDAO iSectionDAO;
+    private IStatusDAO iStatusDAO;
 
     public PrimaryModel(){
         this.support = new PropertyChangeSupport(this);
-        this.iSectionDAO = new SectionDAO("jdbc:postgresql://localhost/exercicemvc", "postgres", "Baptiste0307");
+        this.iSectionDAO = factory.createSectionDAO();
+        this.iStatusDAO = factory.createStatusDAO();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -25,6 +32,7 @@ public class PrimaryModel implements IModel{
         support.removePropertyChangeListener(pcl);
     }
 
+    //Section
     @Override
     public void getAllSection(){
         ArrayList<Section> sections = this.iSectionDAO.getSections();
@@ -62,9 +70,51 @@ public class PrimaryModel implements IModel{
         this.getSection(nom);
     }
 
+
+    //Status
+    @Override
+    public void getAllStatus(){
+        ArrayList<Status> status = this.iStatusDAO.getStatus();
+        ArrayList<String> statusName = new ArrayList<>();
+        for (Status sta : status) {
+            statusName.add(sta.getNom());
+        }
+        support.firePropertyChange("listeStatus", "", statusName);        
+    }
+
+    @Override
+    public void getStatus(String statusName){
+        int id = this.iStatusDAO.getIDStatus(statusName);
+        ArrayList<String> infoStatus = new ArrayList<>();
+        infoStatus.add(Integer.toString(id));
+        infoStatus.add(statusName);
+        support.firePropertyChange("statusSelected", "", infoStatus );
+    }
+
+    @Override
+    public void deleteStatus(String id) {
+        this.iStatusDAO.deleteStatus(Integer.parseInt(id));
+        this.getAllStatus();
+    }
+
+    @Override
+    public void updateStatus(String id, String nom) {
+        this.iStatusDAO.updateStatus(Integer.parseInt(id), nom);
+        this.getStatus(nom);
+    }
+
+    @Override
+    public void insertStatus(String nom) {
+        this.iStatusDAO.addStatus(nom);
+        this.getStatus(nom);
+    }
+
+
+
     @Override
     public void close() {
         this.iSectionDAO.close();
+        this.iStatusDAO.close();
     }
 
 }

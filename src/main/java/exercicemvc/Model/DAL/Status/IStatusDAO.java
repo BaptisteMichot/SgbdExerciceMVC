@@ -15,5 +15,5 @@ public interface IStatusDAO {
 
     public boolean addStatus(String nom);
 
-    public void close();
+    public boolean close();
 }

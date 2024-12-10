@@ -51,17 +51,17 @@ public class ITApp {
         Assertions.assertAll(
             () -> {
                 controller.showAllSections();
-                Assertions.assertEquals("Droit-Informatiques de gestion-", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Droit-Informatique de gestion-", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();
                 controller.showAllSections();
-                Assertions.assertEquals("Droit-Informatiques de gestion-", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Droit-Informatique de gestion-", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();
                 controller.showSections("Droit");                
-                Assertions.assertEquals("3-Droit", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("1-Droit", outputStreamCaptor.toString().trim());
 
             },
             () -> {
@@ -102,12 +102,12 @@ public class ITApp {
         Assertions.assertAll(
             () -> {
                 controller.showAllStatus();
-                Assertions.assertEquals("Chargé de cours-Etudiant", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();
                 controller.showAllStatus();
-                Assertions.assertEquals("Chargé de cours-Etudiant", outputStreamCaptor.toString().trim());
+                Assertions.assertEquals("Chargé de cours-Etudiant-Employé administratif", outputStreamCaptor.toString().trim());
             },
             () -> {
                 outputStreamCaptor.reset();

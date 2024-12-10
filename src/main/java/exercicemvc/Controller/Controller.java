@@ -86,6 +86,24 @@ public class Controller {
                 break;
             case "delete-section":
                 t = (x) -> this.deleteSection(x[0]);
+                break;
+            case "show-status":
+                t = (x) -> this.showAllStatus();
+                break;                
+            case "show-single-status":
+                t = (x) -> this.showStatus(x[0]);
+                break;
+            case "add-status":
+                t = (x) -> this.view.addNewStatus();
+                break;
+            case "insert-status":
+                t = (x) -> this.insertStatus(x[0]);
+                break;
+            case "update-status":
+                t = (x) -> this.updateStatus(x[0], x[1]);
+                break;
+            case "delete-status":
+                t = (x) -> this.deleteStatus(x[0]);
                 break;        
             default:
                 throw new InvalidParameterException(action + " n'existe pas.");
@@ -101,6 +119,7 @@ public class Controller {
         this.view = view;
     }
 
+    //Sections
     public void showAllSections(){
         this.model.getAllSection();
     }
@@ -120,6 +139,28 @@ public class Controller {
     public void insertSection(String nom){
         this.model.insertSection(nom);
     }
+
+    //Status
+    public void showAllStatus(){
+        this.model.getAllStatus();
+    }
+
+    public void showStatus(String statusName){
+        this.model.getStatus(statusName);
+    }
+
+    public void deleteStatus(String id){
+        this.model.deleteStatus(id);
+    }
+
+    public void updateStatus(String id, String nom){
+        this.model.updateStatus(id, nom);
+    }
+
+    public void insertStatus(String nom){
+        this.model.insertStatus(nom);
+    }
+
 
     public void stop(){
         this.model.close();        
