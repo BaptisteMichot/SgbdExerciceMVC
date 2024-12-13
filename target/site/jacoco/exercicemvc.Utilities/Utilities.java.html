@@ -2,28 +2,24 @@
 
 import java.util.ArrayList;
 
-<span class="fc" id="L5">public class Utilities {</span>
+<span class="nc" id="L5">public class Utilities {</span>
 
-    /**
-     * Convertit une liste en ArrayList&lt;String&gt; si c'est bien une chaine de caractères
-     *
-     * @param liste la liste à convertir
-     * @return ArrayList&lt;String&gt; si la conversion est possible, sinon null
-     */
-    public ArrayList&lt;String&gt; convertToStringList(ArrayList&lt;?&gt; liste) {
-        try {
-<span class="fc" id="L15">            ArrayList&lt;String&gt; listeString = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L16" title="All 2 branches covered.">            for (Object obj : liste) {</span>
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">                if (obj instanceof String) {</span>
-<span class="fc" id="L18">                    listeString.add((String) obj);</span>
-<span class="fc" id="L19">                } else {</span>
-<span class="nc" id="L20">                    return null;</span>
-                }
-            }
-<span class="fc" id="L23">            return listeString;</span>
-<span class="nc" id="L24">        } catch (ClassCastException e) {</span>
-<span class="nc" id="L25">            return null;</span>
+    
+    //Vérifie si oui ou non un objet est une ArrayList de String
+    public boolean isArrayListString(Object obj) {
+          
+<span class="nc bnc" id="L11" title="All 2 branches missed.">        if(!(obj instanceof ArrayList&lt;?&gt;)){</span>
+<span class="nc" id="L12">            return false;</span>
         }
+<span class="nc" id="L14">        ArrayList&lt;?&gt; liste = (ArrayList&lt;?&gt;) obj;</span>
+        
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        for (Object element : liste) {</span>
+
+<span class="nc bnc" id="L18" title="All 2 branches missed.">            if(!(element instanceof String)){</span>
+<span class="nc" id="L19">                return false;</span>
+            }
+<span class="nc" id="L21">        }</span>
+<span class="nc" id="L22">        return true;</span>
     }
     
 }

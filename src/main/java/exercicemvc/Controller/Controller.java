@@ -1,14 +1,18 @@
 package exercicemvc.Controller;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.security.InvalidParameterException;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import exercicemvc.Model.IModel;
 import exercicemvc.Model.PrimaryModel;
 import exercicemvc.View.IView;
-import exercicemvc.View.Main;
+import exercicemvc.View.ViewFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -17,10 +21,13 @@ import javafx.stage.WindowEvent;
 public class Controller {
     private IModel model;
     private IView view;
+    
 
-    public void initialize(){
+    public void initialize() {
         this.model = new PrimaryModel();
-        this.view = new Main();
+        String selectedView = getDefaultView();
+        this.view = ViewFactory.createView(selectedView);
+
         if (PropertyChangeListener.class.isAssignableFrom(view.getClass())){
             PropertyChangeListener pcl = (PropertyChangeListener) view;            
             model.addPropertyChangeListener(pcl);
@@ -28,8 +35,26 @@ public class Controller {
         view.setController(this);
     }
 
+
+    private String getDefaultView() {
+        Properties properties = new Properties();
+        String pathConfigView = "src/main/resources/exercicemvc/ConfigView.properties";
+
+        try(InputStream input = new FileInputStream(pathConfigView)) {
+            properties.load(input);
+            String selectedView = properties.getProperty("default.view", "application");
+            return selectedView;
+        }catch(IOException e){
+            System.err.println("Erreur lors de la lecture du fichier de configuration : " + e.getMessage());
+            return "application";
+        }
+    }
+
+
     public void start(){
-        this.view.launchApp();
+        if(view!=null){
+            this.view.launchApp();
+        }
     }
 
     public EventHandler<ActionEvent> generateEventHandlerAction(String action, Supplier<String[]> params){    

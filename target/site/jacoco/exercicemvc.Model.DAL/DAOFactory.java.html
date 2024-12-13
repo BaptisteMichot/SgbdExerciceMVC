@@ -22,9 +22,9 @@ public class DAOFactory implements IDAOFactory {
         try{
 <span class="fc" id="L23">            this.connexion = DriverManager.getConnection(url, user, password);</span>
 
-<span class="pc" id="L25">        } catch (SQLException e){</span>
+<span class="nc" id="L25">        } catch (SQLException e){</span>
 <span class="nc" id="L26">            e.printStackTrace();</span>
-        }
+<span class="fc" id="L27">        }</span>
 <span class="fc" id="L28">    }</span>
 
 
@@ -36,7 +36,7 @@ public class DAOFactory implements IDAOFactory {
 <span class="nc" id="L36">            } catch (SQLException e) {</span>
 <span class="nc" id="L37">                e.printStackTrace();</span>
 <span class="nc" id="L38">                return false;</span>
-            }
+<span class="nc" id="L39">            }</span>
         }
 
 <span class="nc" id="L42">        return true;</span>

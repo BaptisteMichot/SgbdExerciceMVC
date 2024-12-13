@@ -40,31 +40,30 @@ public class TestingView implements PropertyChangeListener, IView {
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public void propertyChange(PropertyChangeEvent evt) {
 
-        ArrayList<?> nouvelleValeur = (ArrayList<?>) evt.getNewValue();
-        ArrayList<String> listeString = utilities.convertToStringList(nouvelleValeur);
-        if(listeString == null){
+        if(utilities.isArrayListString(evt.getNewValue())){
+            
+            switch(evt.getPropertyName()) {
+                case "listeSection":
+                    this.showAllSections((ArrayList<String>) evt.getNewValue());
+                    break;
+                case "sectionSelected":
+                    this.showSection((ArrayList<String>) evt.getNewValue());
+                    break;
+                case "listeStatus":
+                    this.showAllStatus((ArrayList<String>) evt.getNewValue());
+                    break;
+                case "statusSelected":
+                    this.showStatus((ArrayList<String>) evt.getNewValue());
+                    break;
+                default:
+                    System.err.println("Erreur : " + evt.getPropertyName() + " n'existe pas");
+                    break;
+            }
+        }else{
             System.err.println("Erreur de type pour " + evt.getPropertyName());
-            return;
-        }
-
-        switch (evt.getPropertyName()) {
-            case "listeSection":
-                this.showAllSections(listeString);
-                break;
-            case "sectionSelected":
-                this.showSection(listeString);
-                break;
-            case "listeStatus":
-                this.showAllStatus(listeString);
-                break;
-            case "statusSelected":
-                this.showStatus(listeString);
-                break;
-            default:
-                System.err.println("Erreur : " + evt.getPropertyName() + " n'a pas été implémenté");
-                break;
         }
     }
 

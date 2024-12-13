@@ -1,170 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mvc</a> &gt; <a href="index.source.html" class="el_package">exercicemvc.Controller</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package exercicemvc.Controller;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.security.InvalidParameterException;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import exercicemvc.Model.IModel;
 import exercicemvc.Model.PrimaryModel;
 import exercicemvc.View.IView;
-import exercicemvc.View.Main;
+import exercicemvc.View.ViewFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 
-<span class="fc" id="L17">public class Controller {</span>
+<span class="nc" id="L21">public class Controller {</span>
     private IModel model;
     private IView view;
+    
 
-    public void initialize(){
-<span class="nc" id="L22">        this.model = new PrimaryModel();</span>
-<span class="nc" id="L23">        this.view = new Main();</span>
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (PropertyChangeListener.class.isAssignableFrom(view.getClass())){</span>
-<span class="nc" id="L25">            PropertyChangeListener pcl = (PropertyChangeListener) view;            </span>
-<span class="nc" id="L26">            model.addPropertyChangeListener(pcl);</span>
+    public void initialize() {
+<span class="nc" id="L27">        this.model = new PrimaryModel();</span>
+<span class="nc" id="L28">        String selectedView = getDefaultView();</span>
+<span class="nc" id="L29">        this.view = ViewFactory.createView(selectedView);</span>
+
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (PropertyChangeListener.class.isAssignableFrom(view.getClass())){</span>
+<span class="nc" id="L32">            PropertyChangeListener pcl = (PropertyChangeListener) view;            </span>
+<span class="nc" id="L33">            model.addPropertyChangeListener(pcl);</span>
         }
-<span class="nc" id="L28">        view.setController(this);</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L35">        view.setController(this);</span>
+<span class="nc" id="L36">    }</span>
+
+
+    private String getDefaultView() {
+<span class="nc" id="L40">        Properties properties = new Properties();</span>
+<span class="nc" id="L41">        String pathConfigView = &quot;src/main/resources/exercicemvc/ConfigView.properties&quot;;</span>
+
+<span class="nc" id="L43">        try(InputStream input = new FileInputStream(pathConfigView)) {</span>
+<span class="nc" id="L44">            properties.load(input);</span>
+<span class="nc" id="L45">            String selectedView = properties.getProperty(&quot;default.view&quot;, &quot;application&quot;);</span>
+<span class="nc" id="L46">            return selectedView;</span>
+<span class="nc" id="L47">        }catch(IOException e){</span>
+<span class="nc" id="L48">            System.err.println(&quot;Erreur lors de la lecture du fichier de configuration : &quot; + e.getMessage());</span>
+<span class="nc" id="L49">            return &quot;application&quot;;</span>
+        }
+    }
+
 
     public void start(){
-<span class="nc" id="L32">        this.view.launchApp();</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if(view!=null){</span>
+<span class="nc" id="L56">            this.view.launchApp();</span>
+        }
+<span class="nc" id="L58">    }</span>
 
     public EventHandler&lt;ActionEvent&gt; generateEventHandlerAction(String action, Supplier&lt;String[]&gt; params){    
-<span class="nc" id="L36">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
-<span class="nc" id="L37">        return new EventHandler&lt;ActionEvent&gt;() {</span>
+<span class="nc" id="L61">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
+<span class="nc" id="L62">        return new EventHandler&lt;ActionEvent&gt;() {</span>
             @Override
             public void handle(ActionEvent arg0) {
-<span class="nc" id="L40">                function.accept(params.get());;</span>
-<span class="nc" id="L41">            }</span>
+<span class="nc" id="L65">                function.accept(params.get());;</span>
+<span class="nc" id="L66">            }</span>
             
         };
     }
 
     public EventHandler&lt;MouseEvent&gt; generateEventHandlerMouse(String action, Supplier&lt;String[]&gt; params){    
-<span class="nc" id="L47">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
-<span class="nc" id="L48">        return new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L72">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
+<span class="nc" id="L73">        return new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent arg0) {
-<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (arg0.getClickCount() == 2 ){</span>
-<span class="nc" id="L52">                    function.accept(params.get());</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (arg0.getClickCount() == 2 ){</span>
+<span class="nc" id="L77">                    function.accept(params.get());</span>
                 }
-<span class="nc" id="L54">            }</span>
+<span class="nc" id="L79">            }</span>
             
         };
     }
 
     public EventHandler&lt;WindowEvent&gt; generateCloseEvent(){
-<span class="nc" id="L60">        return new EventHandler&lt;WindowEvent&gt;() {</span>
+<span class="nc" id="L85">        return new EventHandler&lt;WindowEvent&gt;() {</span>
             @Override
             public void handle(WindowEvent t) {
-<span class="nc" id="L63">                stop();</span>
-<span class="nc" id="L64">                System.exit(0);</span>
-<span class="nc" id="L65">            }</span>
+<span class="nc" id="L88">                stop();</span>
+<span class="nc" id="L89">                System.exit(0);</span>
+<span class="nc" id="L90">            }</span>
         };
     }
 
     private Consumer&lt;String[]&gt; generateConsumer(String action){
         Consumer&lt;String[]&gt; t;
-<span class="nc bnc" id="L71" title="All 13 branches missed.">        switch (action) {</span>
+<span class="nc bnc" id="L96" title="All 13 branches missed.">        switch (action) {</span>
             case &quot;show-sections&quot;:
-<span class="nc" id="L73">                t = (x) -&gt; this.showAllSections();</span>
-<span class="nc" id="L74">                break;                </span>
+<span class="nc" id="L98">                t = (x) -&gt; this.showAllSections();</span>
+<span class="nc" id="L99">                break;                </span>
             case &quot;show-section&quot;:
-<span class="nc" id="L76">                t = (x) -&gt; this.showSections(x[0]);</span>
-<span class="nc" id="L77">                break;</span>
+<span class="nc" id="L101">                t = (x) -&gt; this.showSections(x[0]);</span>
+<span class="nc" id="L102">                break;</span>
             case &quot;add-section&quot;:
-<span class="nc" id="L79">                t = (x) -&gt; this.view.addNewSection();</span>
-<span class="nc" id="L80">                break;</span>
+<span class="nc" id="L104">                t = (x) -&gt; this.view.addNewSection();</span>
+<span class="nc" id="L105">                break;</span>
             case &quot;insert-section&quot;:
-<span class="nc" id="L82">                t = (x) -&gt; this.insertSection(x[0]);</span>
-<span class="nc" id="L83">                break;</span>
+<span class="nc" id="L107">                t = (x) -&gt; this.insertSection(x[0]);</span>
+<span class="nc" id="L108">                break;</span>
             case &quot;update-section&quot;:
-<span class="nc" id="L85">                t = (x) -&gt; this.updateSection(x[0], x[1]);</span>
-<span class="nc" id="L86">                break;</span>
+<span class="nc" id="L110">                t = (x) -&gt; this.updateSection(x[0], x[1]);</span>
+<span class="nc" id="L111">                break;</span>
             case &quot;delete-section&quot;:
-<span class="nc" id="L88">                t = (x) -&gt; this.deleteSection(x[0]);</span>
-<span class="nc" id="L89">                break;</span>
+<span class="nc" id="L113">                t = (x) -&gt; this.deleteSection(x[0]);</span>
+<span class="nc" id="L114">                break;</span>
             case &quot;show-status&quot;:
-<span class="nc" id="L91">                t = (x) -&gt; this.showAllStatus();</span>
-<span class="nc" id="L92">                break;                </span>
+<span class="nc" id="L116">                t = (x) -&gt; this.showAllStatus();</span>
+<span class="nc" id="L117">                break;                </span>
             case &quot;show-single-status&quot;:
-<span class="nc" id="L94">                t = (x) -&gt; this.showStatus(x[0]);</span>
-<span class="nc" id="L95">                break;</span>
+<span class="nc" id="L119">                t = (x) -&gt; this.showStatus(x[0]);</span>
+<span class="nc" id="L120">                break;</span>
             case &quot;add-status&quot;:
-<span class="nc" id="L97">                t = (x) -&gt; this.view.addNewStatus();</span>
-<span class="nc" id="L98">                break;</span>
+<span class="nc" id="L122">                t = (x) -&gt; this.view.addNewStatus();</span>
+<span class="nc" id="L123">                break;</span>
             case &quot;insert-status&quot;:
-<span class="nc" id="L100">                t = (x) -&gt; this.insertStatus(x[0]);</span>
-<span class="nc" id="L101">                break;</span>
+<span class="nc" id="L125">                t = (x) -&gt; this.insertStatus(x[0]);</span>
+<span class="nc" id="L126">                break;</span>
             case &quot;update-status&quot;:
-<span class="nc" id="L103">                t = (x) -&gt; this.updateStatus(x[0], x[1]);</span>
-<span class="nc" id="L104">                break;</span>
+<span class="nc" id="L128">                t = (x) -&gt; this.updateStatus(x[0], x[1]);</span>
+<span class="nc" id="L129">                break;</span>
             case &quot;delete-status&quot;:
-<span class="nc" id="L106">                t = (x) -&gt; this.deleteStatus(x[0]);</span>
-<span class="nc" id="L107">                break;        </span>
+<span class="nc" id="L131">                t = (x) -&gt; this.deleteStatus(x[0]);</span>
+<span class="nc" id="L132">                break;        </span>
             default:
-<span class="nc" id="L109">                throw new InvalidParameterException(action + &quot; n'existe pas.&quot;);</span>
+<span class="nc" id="L134">                throw new InvalidParameterException(action + &quot; n'existe pas.&quot;);</span>
         }
-<span class="nc" id="L111">        return t;</span>
+<span class="nc" id="L136">        return t;</span>
     }
 
     public void setModel(IModel model){
-<span class="fc" id="L115">        this.model = model;</span>
-<span class="fc" id="L116">    }</span>
+<span class="nc" id="L140">        this.model = model;</span>
+<span class="nc" id="L141">    }</span>
 
     public void setView(IView view){
-<span class="fc" id="L119">        this.view = view;</span>
-<span class="fc" id="L120">    }</span>
+<span class="nc" id="L144">        this.view = view;</span>
+<span class="nc" id="L145">    }</span>
 
     //Sections
     public void showAllSections(){
-<span class="fc" id="L124">        this.model.getAllSection();</span>
-<span class="fc" id="L125">    }</span>
+<span class="nc" id="L149">        this.model.getAllSection();</span>
+<span class="nc" id="L150">    }</span>
 
     public void showSections(String sectionName){
-<span class="fc" id="L128">        this.model.getSection(sectionName);</span>
-<span class="fc" id="L129">    }</span>
+<span class="nc" id="L153">        this.model.getSection(sectionName);</span>
+<span class="nc" id="L154">    }</span>
 
     public void deleteSection(String id){
-<span class="fc" id="L132">        this.model.deleteSection(id);</span>
-<span class="fc" id="L133">    }</span>
+<span class="nc" id="L157">        this.model.deleteSection(id);</span>
+<span class="nc" id="L158">    }</span>
 
     public void updateSection(String id, String nom){
-<span class="fc" id="L136">        this.model.updateSection(id, nom);</span>
-<span class="fc" id="L137">    }</span>
+<span class="nc" id="L161">        this.model.updateSection(id, nom);</span>
+<span class="nc" id="L162">    }</span>
 
     public void insertSection(String nom){
-<span class="fc" id="L140">        this.model.insertSection(nom);</span>
-<span class="fc" id="L141">    }</span>
+<span class="nc" id="L165">        this.model.insertSection(nom);</span>
+<span class="nc" id="L166">    }</span>
 
     //Status
     public void showAllStatus(){
-<span class="fc" id="L145">        this.model.getAllStatus();</span>
-<span class="fc" id="L146">    }</span>
+<span class="nc" id="L170">        this.model.getAllStatus();</span>
+<span class="nc" id="L171">    }</span>
 
     public void showStatus(String statusName){
-<span class="fc" id="L149">        this.model.getStatus(statusName);</span>
-<span class="fc" id="L150">    }</span>
+<span class="nc" id="L174">        this.model.getStatus(statusName);</span>
+<span class="nc" id="L175">    }</span>
 
     public void deleteStatus(String id){
-<span class="fc" id="L153">        this.model.deleteStatus(id);</span>
-<span class="fc" id="L154">    }</span>
+<span class="nc" id="L178">        this.model.deleteStatus(id);</span>
+<span class="nc" id="L179">    }</span>
 
     public void updateStatus(String id, String nom){
-<span class="fc" id="L157">        this.model.updateStatus(id, nom);</span>
-<span class="fc" id="L158">    }</span>
+<span class="nc" id="L182">        this.model.updateStatus(id, nom);</span>
+<span class="nc" id="L183">    }</span>
 
     public void insertStatus(String nom){
-<span class="fc" id="L161">        this.model.insertStatus(nom);</span>
-<span class="fc" id="L162">    }</span>
+<span class="nc" id="L186">        this.model.insertStatus(nom);</span>
+<span class="nc" id="L187">    }</span>
 
 
     public void stop(){
-<span class="nc" id="L166">        this.model.close();        </span>
-<span class="nc" id="L167">        this.view.stopApp();</span>
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L191">        this.model.close();        </span>
+<span class="nc" id="L192">        this.view.stopApp();</span>
+<span class="nc" id="L193">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

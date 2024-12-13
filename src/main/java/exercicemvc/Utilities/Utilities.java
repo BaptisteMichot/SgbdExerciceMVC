@@ -4,26 +4,22 @@ import java.util.ArrayList;
 
 public class Utilities {
 
-    /**
-     * Convertit une liste en ArrayList<String> si c'est bien une chaine de caractères
-     *
-     * @param liste la liste à convertir
-     * @return ArrayList<String> si la conversion est possible, sinon null
-     */
-    public ArrayList<String> convertToStringList(ArrayList<?> liste) {
-        try {
-            ArrayList<String> listeString = new ArrayList<>();
-            for (Object obj : liste) {
-                if (obj instanceof String) {
-                    listeString.add((String) obj);
-                } else {
-                    return null;
-                }
-            }
-            return listeString;
-        } catch (ClassCastException e) {
-            return null;
+    
+    //Vérifie si oui ou non un objet est une ArrayList de String
+    public boolean isArrayListString(Object obj) {
+          
+        if(!(obj instanceof ArrayList<?>)){
+            return false;
         }
+        ArrayList<?> liste = (ArrayList<?>) obj;
+        
+        for (Object element : liste) {
+
+            if(!(element instanceof String)){
+                return false;
+            }
+        }
+        return true;
     }
     
 }

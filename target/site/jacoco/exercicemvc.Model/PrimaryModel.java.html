@@ -12,110 +12,110 @@ import exercicemvc.Model.DAL.Status.IStatusDAO;
 
 public class PrimaryModel implements IModel{
 
-<span class="fc" id="L15">    DAOFactory factory = new DAOFactory();</span>
+<span class="nc" id="L15">    DAOFactory factory = new DAOFactory();</span>
 
     private PropertyChangeSupport support;
     private ISectionDAO iSectionDAO;
     private IStatusDAO iStatusDAO;
 
-<span class="fc" id="L21">    public PrimaryModel(){</span>
-<span class="fc" id="L22">        this.support = new PropertyChangeSupport(this);</span>
-<span class="fc" id="L23">        this.iSectionDAO = factory.createSectionDAO();</span>
-<span class="fc" id="L24">        this.iStatusDAO = factory.createStatusDAO();</span>
-<span class="fc" id="L25">    }</span>
+<span class="nc" id="L21">    public PrimaryModel(){</span>
+<span class="nc" id="L22">        this.support = new PropertyChangeSupport(this);</span>
+<span class="nc" id="L23">        this.iSectionDAO = factory.createSectionDAO();</span>
+<span class="nc" id="L24">        this.iStatusDAO = factory.createStatusDAO();</span>
+<span class="nc" id="L25">    }</span>
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
-<span class="fc" id="L28">        support.addPropertyChangeListener(pcl);</span>
-<span class="fc" id="L29">    }</span>
+<span class="nc" id="L28">        support.addPropertyChangeListener(pcl);</span>
+<span class="nc" id="L29">    }</span>
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
-<span class="fc" id="L32">        support.removePropertyChangeListener(pcl);</span>
-<span class="fc" id="L33">    }</span>
+<span class="nc" id="L32">        support.removePropertyChangeListener(pcl);</span>
+<span class="nc" id="L33">    }</span>
 
     //Section
     @Override
     public void getAllSection(){
-<span class="fc" id="L38">        ArrayList&lt;Section&gt; sections = this.iSectionDAO.getSections();</span>
-<span class="fc" id="L39">        ArrayList&lt;String&gt; sectionsName = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (Section section : sections) {</span>
-<span class="fc" id="L41">            sectionsName.add(section.getNom());</span>
-        }
-<span class="fc" id="L43">        support.firePropertyChange(&quot;listeSection&quot;, &quot;&quot;, sectionsName);        </span>
-<span class="fc" id="L44">    }</span>
+<span class="nc" id="L38">        ArrayList&lt;Section&gt; sections = this.iSectionDAO.getSections();</span>
+<span class="nc" id="L39">        ArrayList&lt;String&gt; sectionsName = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for (Section section : sections) {</span>
+<span class="nc" id="L41">            sectionsName.add(section.getNom());</span>
+<span class="nc" id="L42">        }</span>
+<span class="nc" id="L43">        support.firePropertyChange(&quot;listeSection&quot;, &quot;&quot;, sectionsName);        </span>
+<span class="nc" id="L44">    }</span>
 
     @Override
     public void getSection(String sectionName){
-<span class="fc" id="L48">        int id = this.iSectionDAO.getIDSection(sectionName);</span>
-<span class="fc" id="L49">        ArrayList&lt;String&gt; infoSection = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L50">        infoSection.add(Integer.toString(id));</span>
-<span class="fc" id="L51">        infoSection.add(sectionName);</span>
-<span class="fc" id="L52">        support.firePropertyChange(&quot;sectionSelected&quot;, &quot;&quot;, infoSection );</span>
-<span class="fc" id="L53">    }</span>
+<span class="nc" id="L48">        int id = this.iSectionDAO.getIDSection(sectionName);</span>
+<span class="nc" id="L49">        ArrayList&lt;String&gt; infoSection = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L50">        infoSection.add(Integer.toString(id));</span>
+<span class="nc" id="L51">        infoSection.add(sectionName);</span>
+<span class="nc" id="L52">        support.firePropertyChange(&quot;sectionSelected&quot;, &quot;&quot;, infoSection );</span>
+<span class="nc" id="L53">    }</span>
 
     @Override
     public void deleteSection(String id) {
-<span class="fc" id="L57">        this.iSectionDAO.deleteSection(Integer.parseInt(id));</span>
-<span class="fc" id="L58">        this.getAllSection();</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L57">        this.iSectionDAO.deleteSection(Integer.parseInt(id));</span>
+<span class="nc" id="L58">        this.getAllSection();</span>
+<span class="nc" id="L59">    }</span>
 
     @Override
     public void updateSection(String id, String nom) {
-<span class="fc" id="L63">        this.iSectionDAO.updateSection(Integer.parseInt(id), nom);</span>
-<span class="fc" id="L64">        this.getSection(nom);</span>
-<span class="fc" id="L65">    }</span>
+<span class="nc" id="L63">        this.iSectionDAO.updateSection(Integer.parseInt(id), nom);</span>
+<span class="nc" id="L64">        this.getSection(nom);</span>
+<span class="nc" id="L65">    }</span>
 
     @Override
     public void insertSection(String nom) {
-<span class="fc" id="L69">        this.iSectionDAO.addSection(nom);</span>
-<span class="fc" id="L70">        this.getSection(nom);</span>
-<span class="fc" id="L71">    }</span>
+<span class="nc" id="L69">        this.iSectionDAO.addSection(nom);</span>
+<span class="nc" id="L70">        this.getSection(nom);</span>
+<span class="nc" id="L71">    }</span>
 
 
     //Status
     @Override
     public void getAllStatus(){
-<span class="fc" id="L77">        ArrayList&lt;Status&gt; status = this.iStatusDAO.getStatus();</span>
-<span class="fc" id="L78">        ArrayList&lt;String&gt; statusName = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (Status sta : status) {</span>
-<span class="fc" id="L80">            statusName.add(sta.getNom());</span>
-        }
-<span class="fc" id="L82">        support.firePropertyChange(&quot;listeStatus&quot;, &quot;&quot;, statusName);        </span>
-<span class="fc" id="L83">    }</span>
+<span class="nc" id="L77">        ArrayList&lt;Status&gt; status = this.iStatusDAO.getStatus();</span>
+<span class="nc" id="L78">        ArrayList&lt;String&gt; statusName = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (Status sta : status) {</span>
+<span class="nc" id="L80">            statusName.add(sta.getNom());</span>
+<span class="nc" id="L81">        }</span>
+<span class="nc" id="L82">        support.firePropertyChange(&quot;listeStatus&quot;, &quot;&quot;, statusName);        </span>
+<span class="nc" id="L83">    }</span>
 
     @Override
     public void getStatus(String statusName){
-<span class="fc" id="L87">        int id = this.iStatusDAO.getIDStatus(statusName);</span>
-<span class="fc" id="L88">        ArrayList&lt;String&gt; infoStatus = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L89">        infoStatus.add(Integer.toString(id));</span>
-<span class="fc" id="L90">        infoStatus.add(statusName);</span>
-<span class="fc" id="L91">        support.firePropertyChange(&quot;statusSelected&quot;, &quot;&quot;, infoStatus );</span>
-<span class="fc" id="L92">    }</span>
+<span class="nc" id="L87">        int id = this.iStatusDAO.getIDStatus(statusName);</span>
+<span class="nc" id="L88">        ArrayList&lt;String&gt; infoStatus = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L89">        infoStatus.add(Integer.toString(id));</span>
+<span class="nc" id="L90">        infoStatus.add(statusName);</span>
+<span class="nc" id="L91">        support.firePropertyChange(&quot;statusSelected&quot;, &quot;&quot;, infoStatus );</span>
+<span class="nc" id="L92">    }</span>
 
     @Override
     public void deleteStatus(String id) {
-<span class="fc" id="L96">        this.iStatusDAO.deleteStatus(Integer.parseInt(id));</span>
-<span class="fc" id="L97">        this.getAllStatus();</span>
-<span class="fc" id="L98">    }</span>
+<span class="nc" id="L96">        this.iStatusDAO.deleteStatus(Integer.parseInt(id));</span>
+<span class="nc" id="L97">        this.getAllStatus();</span>
+<span class="nc" id="L98">    }</span>
 
     @Override
     public void updateStatus(String id, String nom) {
-<span class="fc" id="L102">        this.iStatusDAO.updateStatus(Integer.parseInt(id), nom);</span>
-<span class="fc" id="L103">        this.getStatus(nom);</span>
-<span class="fc" id="L104">    }</span>
+<span class="nc" id="L102">        this.iStatusDAO.updateStatus(Integer.parseInt(id), nom);</span>
+<span class="nc" id="L103">        this.getStatus(nom);</span>
+<span class="nc" id="L104">    }</span>
 
     @Override
     public void insertStatus(String nom) {
-<span class="fc" id="L108">        this.iStatusDAO.addStatus(nom);</span>
-<span class="fc" id="L109">        this.getStatus(nom);</span>
-<span class="fc" id="L110">    }</span>
+<span class="nc" id="L108">        this.iStatusDAO.addStatus(nom);</span>
+<span class="nc" id="L109">        this.getStatus(nom);</span>
+<span class="nc" id="L110">    }</span>
 
 
 
     @Override
     public void close() {
-<span class="fc" id="L116">        this.iSectionDAO.close();</span>
-<span class="fc" id="L117">        this.iStatusDAO.close();</span>
-<span class="fc" id="L118">    }</span>
+<span class="nc" id="L116">        this.iSectionDAO.close();</span>
+<span class="nc" id="L117">        this.iStatusDAO.close();</span>
+<span class="nc" id="L118">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
